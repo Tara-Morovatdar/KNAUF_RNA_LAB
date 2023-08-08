@@ -1,0 +1,17 @@
+{
+	"name": "pipeline03",
+	"properties": {
+		"activities": [
+			{
+				"name": "Wait2sec",
+				"type": "Wait",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"waitTimeInSeconds": 2
+				}
+			}
+		],
+		"annotations": []
+	}
+}
