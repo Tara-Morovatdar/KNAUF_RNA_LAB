@@ -43,7 +43,7 @@ jobs:
       - name: Validate
         run: npm run build validate ${{github.workspace}}/subscriptions/73d4603c-76cc-4e1b-bed0-a3780c55b193/resourceGroups/ADF_LAB_KNAUF/providers/Microsoft.DataFactory/factories/DatafactoryForKnaufDemo 
         # (2) The validate command needs the root folder location of your repository where all the objects are stored. And the 2nd parameter is the resourceID of the ADF instance 
-        working-directory: ${{github.workspace}/build
+        working-directory: ${{github.workspace}}/build
   
 
       - name: Validate and Generate ARM template
