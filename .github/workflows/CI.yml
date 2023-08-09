@@ -27,11 +27,11 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - name: Checkout code
-      - uses: actions/checkout@v3
+        uses: actions/checkout@v3
 
       # Runs a single command using the runners shell
       - name: Setup Node.js environment
-      - uses: actions/setup-node@v3.4.1
+        uses: actions/setup-node@v3.4.1
         with:
           node-version: 14.x
         
