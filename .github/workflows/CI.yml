@@ -1,0 +1,86 @@
+# This is a basic workflow to help you get started with Actions
+
+name: CI
+
+# Controls when the workflow will run
+on:
+  workflow_dispatch:
+  # pull_request:
+  push:
+    branches:
+    - main
+    paths-ignore:
+      - '.github/**'
+  # Allows you to run this workflow manually from the Actions tab
+  
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  build:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v3
+
+      # Runs a single command using the runners shell
+      - name: Setup Node.js environment
+      - uses: actions/setup-node@v3.4.1
+        with:
+          node-version: 14.x
+        
+      - name: install ADF Utilities package
+        run: npm install
+        working-directory: ${{github.workspace}}/build  # (1) provide the folder location of the package.json file
+
+  # Validates all of the Data Factory resources in the repository. You'll get the same validation errors as when "Validate All" is selected.
+      - name: Validate
+        run: npm run build validate ${{github.workspace}}/subscriptions/73d4603c-76cc-4e1b-bed0-a3780c55b193/resourceGroups/ADF_LAB_KNAUF/providers/Microsoft.DataFactory/factories/DatafactoryForKnaufDemo 
+        # (2) The validate command needs the root folder location of your repository where all the objects are stored. And the 2nd parameter is the resourceID of the ADF instance 
+        working-directory: ${{github.workspace}/build
+  
+
+      - name: Validate and Generate ARM template
+        run: npm run build export ${{github.workspace}}/subscriptions/73d4603c-76cc-4e1b-bed0-a3780c55b193/resourceGroups/ADF_LAB_KNAUF/providers/Microsoft.DataFactory/factories/DatafactoryForKnaufDemo "ExportedArmTemplate"  # (3) The build command, as validate, needs the root folder location of your repository where all the objects are stored. And the 2nd parameter is the resourceID of the ADF instance. The 3rd parameter is the exported ARM template artifact name 
+        working-directory: ${{github.workspace}}/build
+  
+  # In order to leverage the artifact in another job, we need to upload it with the upload action 
+      - name: upload artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: ExportedArmTemplate # (4) use the same artifact name you used in the previous export step
+          path: ${{github.workspace}}/build/ExportedArmTemplate  
+
+
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+    
+ # we 1st download the previously uploaded artifact so we can leverage it later in the release job     
+      - name: Download a Build Artifact
+        uses: actions/download-artifact@v3.0.2
+        with:
+          name: ExportedArmTemplate # (5) Artifact name 
+
+
+      - name: Login via Az module
+        uses: azure/login@v1
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+          enable-AzPSSession: true 
+
+      - name: data-factory-deploy
+        uses: Azure/data-factory-deploy-action@v1.2.0
+        with:
+          resourceGroupName: ADF_LAB_KNAUF # (6) your target ADF resource group name
+          dataFactoryName: DatafactoryForKnaufDemo # (7) your target ADF name
+          armTemplateFile: ARMTemplateForFactory.json # (8) ARM template file name ARMTemplateForFactory.json
+          armTemplateParametersFile: ARMTemplateParametersForFactory.json # (9) ARM template parameters file name ARMTemplateParametersForFactory.json
+          
+          # skipAzModuleInstallation:  # Parameters which skip the Az module installation. Optional, default is false.​    
