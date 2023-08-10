@@ -72,7 +72,7 @@ jobs:
       - name: Download latest ROM
         id: download
         run: |
-          gh run download -R Tara-Morovatdar/KNAUF_RNA_LAB -n "ExportedArmTemplate" --dir ARM_rep
+          gh run download ExportedArmTemplate
         env:
           GH_TOKEN: ${{ github.token }}
 
