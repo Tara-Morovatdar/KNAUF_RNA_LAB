@@ -17,7 +17,6 @@ jobs:
           echo $GITHUB_WORKSPACE
       - name: Build ROM
         run: |
-          make
           mkdir artifact
           echo hi > world.txt
           cp build/world.txt artifact/.
