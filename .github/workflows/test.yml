@@ -2,7 +2,6 @@
 
 name: Test WF
 
-# Controls when the workflow will run
 on:
   workflow_dispatch:
   # pull_request:
@@ -18,56 +17,43 @@ permissions:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains a single job called "build"
-  build:
-    # The type of runner that the job will run on
-    runs-on: ubuntu-latest
+- job: Job_1
+  displayName: Agent job 1
+  pool:
+    vmImage: ubuntu-20.04
+  steps:
+  - checkout: self
+    persistCredentials: True
+  - task: ArchiveFiles@2
+    displayName: Archive README.md
+    inputs:
+      rootFolderOrFile: README.md
+      archiveFile: $(Build.ArtifactStagingDirectory)\zipfolder/$(Build.BuildId).zip
+  - task: PublishBuildArtifacts@1
+    displayName: 'Publish Artifact: drop'
+    inputs:
+      PathtoPublish: $(Build.ArtifactStagingDirectory)\zipfolder
+  - task: DownloadBuildArtifacts@1
+    displayName: Download Build Artifacts
+    inputs:
+      artifactName: drop
+  - task: CmdLine@2
+    displayName: Command Line Script
+    inputs:
+      script: >-
+        cd $(System.ArtifactsDirectory)\zipfolder
 
-    # Steps represent a sequence of tasks that will be executed as part of the job
-    steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - name: Checkout code
-        uses: actions/checkout@v3
+        git config --global user.email "xxxxx"
 
-      # Runs a single command using the runners shell
-      - name: Setup Node.js environment
-        uses: actions/setup-node@v3.4.1
-        with:
-          node-version: 14.x
-        
-      - name: install ADF Utilities package
-        run: npm install
-        working-directory: ${{github.workspace}}/build  # (1) provide the folder location of the package.json file
+        git config --global user.name "xxxxx"
 
-  # Validates all of the Data Factory resources in the repository. You'll get the same validation errors as when "Validate All" is selected.
-      - name: Validate
-        run: npm run build validate ${{github.workspace}}/ /subscriptions/73d4603c-76cc-4e1b-bed0-a3780c55b193/resourceGroups/ADF_LAB_KNAUF/providers/Microsoft.DataFactory/factories/DatafactoryForKnaufDemo 
-        # (2) The validate command needs the root folder location of your repository where all the objects are stored. And the 2nd parameter is the resourceID of the ADF instance 
-        working-directory: ${{github.workspace}}/build
-  
+        git init
 
-      - name: Validate and Generate ARM template
-        run: npm run build export ${{github.workspace}}/ /subscriptions/73d4603c-76cc-4e1b-bed0-a3780c55b193/resourceGroups/ADF_LAB_KNAUF/providers/Microsoft.DataFactory/factories/DatafactoryForKnaufDemo "ExportedArmTemplate"  # (3) The build command, as validate, needs the root folder location of your repository where all the objects are stored. And the 2nd parameter is the resourceID of the ADF instance. The 3rd parameter is the exported ARM template artifact name 
-        working-directory: ${{github.workspace}}/build
-  
-  # In order to leverage the artifact in another job, we need to upload it with the upload action 
-      - name: upload artifact
-        uses: actions/upload-artifact@v3
-        with:
-          name: ExportedArmTemplate # (4) use the same artifact name you used in the previous export step
-          path: ${{github.workspace}}/build/ExportedArmTemplate  
+        git add .
 
-      - run: echo hello > ${{github.workspace}}/build/world.txt
+        git commit -m "123"
 
-      - uses: actions/upload-artifact@v3
-        with:
-          name: my-artifact
-          path: ${{github.workspace}}/build/world.txt
+        git remote add origin https://$(System.AccessToken)@dev.azure.com/orgname/testpro1/_git/testpro4
 
-      - name: Download latest build
-        #id: download
-        run: |
-          gh run download --name my-artifact --dir Tara-Morovatdar/KNAUF_RNA_LAB
-        # gh run download ${{github.run_id}} -n "ExportedArmTemplate" --dir ARM_rep
-        env:
-          GH_TOKEN: ${{ github.token }}
+        git push https://$(System.AccessToken)@dev.azure.com/orgname/testpro1/_git/testpro4
+...
