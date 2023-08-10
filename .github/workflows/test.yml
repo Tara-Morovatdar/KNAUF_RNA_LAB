@@ -1,6 +1,6 @@
 # This is a basic workflow to help you get started with Actions
 
-name: Test WF
+name: CI
 
 # Controls when the workflow will run
 on:
@@ -60,14 +60,17 @@ jobs:
       - name: Archive Build Result
         run : |
           mkdir artifact
-          ls artifact/.
           cp --recursive ${{github.workspace}}/build artifact/.
-          ls artifact/.
+          
 
       - name: upload Build Result
         uses: actions/upload-artifact@v3
         with:
           name: ROM Image
           path: artifact
-          
+
+      - name: Download latest ROM
+        id: download
+        run: |
+          gh run download -R Tara-Morovatdar/KNAUF_RNA_LAB -n "ROM Image" --dir ARM_rep
 
