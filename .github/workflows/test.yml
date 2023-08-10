@@ -67,7 +67,7 @@ jobs:
       - name: Download latest build
         #id: download
         run: |
-          gh run download ${{github.run_id}} --name my-artifact --dir Tara-Morovatdar/KNAUF_RNA_LAB
+          gh run download --name my-artifact --dir Tara-Morovatdar/KNAUF_RNA_LAB
         # gh run download ${{github.run_id}} -n "ExportedArmTemplate" --dir ARM_rep
         env:
           GH_TOKEN: ${{ github.token }}
