@@ -69,10 +69,11 @@ jobs:
       #     name: ROM Image
       #     path: artifact
 
-      - name: Download latest ROM
+      - name: Download latest build
         #id: download
         run: |
-          gh run download ${{github.run_id}} -n "ExportedArmTemplate" --dir ARM_rep
+          gh run download --name ExportedArmTemplate --dir ${{env.working-directory}}/build
+        # gh run download ${{github.run_id}} -n "ExportedArmTemplate" --dir ARM_rep
         env:
           GH_TOKEN: ${{ github.token }}
 
