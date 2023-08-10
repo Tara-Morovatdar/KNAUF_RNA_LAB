@@ -62,5 +62,12 @@ jobs:
           mkdir artifact
           ls artifact/.
           cp --recursive ${{github.workspace}}/build artifact/.
+          ls artifact/.
+
+      - name: upload Build Result
+        uses: actions/upload-artifact@v3
+        with:
+          name: ROM Image
+          path: artifact
           
 
