@@ -71,4 +71,3 @@ jobs:
         # gh run download ${{github.run_id}} -n "ExportedArmTemplate" --dir ARM_rep
         env:
           GH_TOKEN: ${{ github.token }}
-
