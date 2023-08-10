@@ -15,3 +15,15 @@ jobs:
       - run: |
           echo ${{ github.workspace }}
           echo $GITHUB_WORKSPACE
+      - name: Build ROM
+        run: |
+          make
+          mkdir artifact
+          echo hi > world.txt
+          cp build/world.txt artifact/.
+
+      - name: Archive Build Result
+        uses: actions/upload-artifact@v3
+        with:
+          name: ROM Image
+          path: artifact
