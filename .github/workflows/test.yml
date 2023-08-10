@@ -60,5 +60,6 @@ jobs:
       - name: Archive Build Result
         run : |
           mkdir artifact
-          cp ${{github.workspace}}/build artifact/.
+          cp ${{github.workspace}}/build/* artifact/.
+          ls artifact/.
 
