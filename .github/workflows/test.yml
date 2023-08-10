@@ -57,22 +57,17 @@ jobs:
           name: ExportedArmTemplate # (4) use the same artifact name you used in the previous export step
           path: ${{github.workspace}}/build/ExportedArmTemplate  
 
-      # - name: Archive Build Result
-      #   run : |
-      #     mkdir artifact
-      #     cp --recursive ${{github.workspace}}/build artifact/.
-          
+      - run: echo hello > ${{github.workspace}}/build/world.txt
 
-      # - name: upload Build Result
-      #   uses: actions/upload-artifact@v3
-      #   with:
-      #     name: ROM Image
-      #     path: artifact
+      - uses: actions/upload-artifact@v3
+        with:
+          name: my-artifact
+          path: ${{github.workspace}}/build/world.txt
 
       - name: Download latest build
         #id: download
         run: |
-          gh run download --name ExportedArmTemplate --dir ${{env.working-directory}}/build
+          gh run download --name my-artifact --dir ${{env.working-directory}}/build
         # gh run download ${{github.run_id}} -n "ExportedArmTemplate" --dir ARM_rep
         env:
           GH_TOKEN: ${{ github.token }}
