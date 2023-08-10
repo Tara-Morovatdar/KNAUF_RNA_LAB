@@ -60,6 +60,7 @@ jobs:
       - name: Archive Build Result
         run : |
           mkdir artifact
-          cp ${{github.workspace}}/build/ExportedArmTemplate artifact/.
           ls artifact/.
+          cp --recursive ${{github.workspace}}/build artifact/.
+          
 
