@@ -1,6 +1,6 @@
 ---
 
-name: CI
+name: test wf
 
 on:  # yamllint disable-line rule:truthy
   workflow_dispatch: ~
