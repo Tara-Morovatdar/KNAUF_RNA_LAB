@@ -57,12 +57,10 @@ jobs:
           name: ExportedArmTemplate # (4) use the same artifact name you used in the previous export step
           path: ${{github.workspace}}/build/ExportedArmTemplate  
 
-  # In order to leverage the artifact in another job, we need to upload it with the upload action 
-      - name: upload artifact
-        uses: actions/upload-artifact@v3
+      - run: echo hi > world.txt
+      - uses: actions/upload-artifact@v3
         with:
-          name: ExportedArmTemplate_1 # (4) use the same artifact name you used in the previous export step
-          path: ${{github.workspace}}/ARM_rep/ExportedArmTemplate_1
+          path: world.txt
 
   release:
     needs: build
