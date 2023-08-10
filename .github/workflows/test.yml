@@ -1,6 +1,6 @@
 # This is a basic workflow to help you get started with Actions
 
-name: CI
+name: Test WF
 
 # Controls when the workflow will run
 on:
@@ -73,4 +73,6 @@ jobs:
         id: download
         run: |
           gh run download -R Tara-Morovatdar/KNAUF_RNA_LAB -n "ROM Image" --dir ARM_rep
+        env:
+          GH_TOKEN: ${{ github.token }}
 
