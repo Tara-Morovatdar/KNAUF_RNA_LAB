@@ -51,11 +51,11 @@ jobs:
         working-directory: ${{github.workspace}}/build
   
   # In order to leverage the artifact in another job, we need to upload it with the upload action 
-#       - name: upload artifact
-#         uses: actions/upload-artifact@v3
-#         with:
-#           name: ExportedArmTemplate # (4) use the same artifact name you used in the previous export step
-#           path: ${{github.workspace}}/build/ExportedArmTemplate  
+      - name: upload artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: ExportedArmTemplate # (4) use the same artifact name you used in the previous export step
+          path: ${{github.workspace}}/build/ExportedArmTemplate  
 
       # - name: Archive Build Result
       #   run : |
@@ -70,9 +70,9 @@ jobs:
       #     path: artifact
 
       - name: Download latest ROM
-        id: download
+        #id: download
         run: |
-          gh run download -R Tara-Morovatdar/KNAUF_RNA_LAB -n "ExportedArmTemplate" --dir ARM_rep
+          gh run ${{github.run_id}} -n "ExportedArmTemplate" --dir ARM_rep
         env:
           GH_TOKEN: ${{ github.token }}
 
