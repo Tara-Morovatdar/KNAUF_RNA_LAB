@@ -57,22 +57,22 @@ jobs:
           name: ExportedArmTemplate # (4) use the same artifact name you used in the previous export step
           path: ${{github.workspace}}/build/ExportedArmTemplate  
 
-      - name: Archive Build Result
-        run : |
-          mkdir artifact
-          cp --recursive ${{github.workspace}}/build artifact/.
+      # - name: Archive Build Result
+      #   run : |
+      #     mkdir artifact
+      #     cp --recursive ${{github.workspace}}/build artifact/.
           
 
-      - name: upload Build Result
-        uses: actions/upload-artifact@v3
-        with:
-          name: ROM Image
-          path: artifact
+      # - name: upload Build Result
+      #   uses: actions/upload-artifact@v3
+      #   with:
+      #     name: ROM Image
+      #     path: artifact
 
       - name: Download latest ROM
         id: download
         run: |
-          gh run download -R Tara-Morovatdar/KNAUF_RNA_LAB -n "ROM Image" --dir ARM_rep
+          gh run download -R Tara-Morovatdar/KNAUF_RNA_LAB -n "ExportedArmTemplate" --dir ARM_rep
         env:
           GH_TOKEN: ${{ github.token }}
 
