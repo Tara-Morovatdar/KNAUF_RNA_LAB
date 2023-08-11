@@ -6,12 +6,12 @@ name: Test WF
 on:
   workflow_dispatch:
   # pull_request:
-  push:
-    branches:
-    - main
-    paths-ignore:
-      - '.github/**'
-      - 'build/**'
+#   push:
+#     branches:
+#     - main
+#     paths-ignore:
+#       - '.github/**'
+#       - 'build/**'
   # Allows you to run this workflow manually from the Actions tab
 permissions:
       id-token: write
@@ -61,15 +61,15 @@ jobs:
 
       - run: echo hellooo > ${{github.workspace}}/build/world1.txt
 
-      - uses: actions/upload-artifact@v3
-        with:
-          name: my-artifact
-          path: ${{github.workspace}}/build/world1.txt
+#       - uses: actions/upload-artifact@v3
+#         with:
+#           name: my-artifact
+#           path: ${{github.workspace}}/build/world1.txt
 
-      - name: Download text file
-        uses: actions/download-artifact@v3.0.2
-        with:
-          name: my-artifact # (5) Artifact name 
+#       - name: Download text file
+#         uses: actions/download-artifact@v3.0.2
+#         with:
+#           name: my-artifact # (5) Artifact name 
       - name: Download a Build Artifact
         uses: actions/download-artifact@v3.0.2
         with:
@@ -77,12 +77,11 @@ jobs:
       - name: commit the built artifact
         uses: EndBug/add-and-commit@v9
         with:
-          add: '.'
           author_name: Tara
           author_email: t.morovatdar@gmail.com
           # Additional arguments for the git commit command. The --message argument is already set by the message input.
           # Default: ''
-          message: 'try to commit artifact'
+          message: 'try to commit artifact for arm'
           #push: true
 
    
