@@ -58,24 +58,15 @@ jobs:
           name: ExportedArmTemplate # (4) use the same artifact name you used in the previous export step
           path: ${{github.workspace}}/build/ExportedArmTemplate  
 
-      - run: echo hello > ${{github.workspace}}/build/world.txt
+      - run: echo hellooo > ${{github.workspace}}/build/world1.txt
 
       - uses: actions/upload-artifact@v3
         with:
           name: my-artifact
-          path: ${{github.workspace}}/build/world.txt
+          path: ${{github.workspace}}/build/world1.txt
 
       - name: Download latest build
         uses: actions/download-artifact@v3.0.2
         with:
           name: my-artifact # (5) Artifact name 
-      - name: commit the built artifact
-        uses: EndBug/add-and-commit@v9
-        with:
-          add: '.'
-          author_name: Tara
-          author_email: t.morovatdar@gmail.com
-          # Additional arguments for the git commit command. The --message argument is already set by the message input.
-          # Default: ''
-          message: 'try to commit artifact'
-          #push: true
+   
