@@ -14,7 +14,8 @@ on:
   # Allows you to run this workflow manually from the Actions tab
 permissions:
       id-token: write
-      contents: read
+      contents: write
+      packages: write
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -76,6 +77,5 @@ jobs:
           author_email: t.morovatdar@gmail.com
           # Additional arguments for the git commit command. The --message argument is already set by the message input.
           # Default: ''
-          commit: --signoff
           message: 'try to commit artifact'
-          
+          #push: true
