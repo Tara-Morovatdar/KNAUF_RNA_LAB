@@ -59,7 +59,7 @@ jobs:
           name: ExportedArmTemplate # (4) use the same artifact name you used in the previous export step
           path: ${{github.workspace}}/build/ExportedArmTemplate  
 
-      - run: echo hellooo > ${{github.workspace}}/build/world1.txt
+ #     - run: echo hellooo > ${{github.workspace}}/build/world1.txt
 
 #       - uses: actions/upload-artifact@v3
 #         with:
@@ -77,11 +77,11 @@ jobs:
       - name: commit the built artifact
         uses: EndBug/add-and-commit@v9
         with:
-          author_name: Tara
-          author_email: t.morovatdar@gmail.com
+#           author_name: Tara
+#           author_email: t.morovatdar@gmail.com
           # Additional arguments for the git commit command. The --message argument is already set by the message input.
           # Default: ''
-          message: 'try to commit artifact for arm'
+          message: 'try to commit artifact only'
           #push: true
 
    
