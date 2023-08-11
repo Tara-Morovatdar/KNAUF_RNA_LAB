@@ -11,6 +11,7 @@ on:
     - main
     paths-ignore:
       - '.github/**'
+      - 'build/**'
   # Allows you to run this workflow manually from the Actions tab
 permissions:
       id-token: write
