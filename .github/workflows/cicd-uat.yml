@@ -48,7 +48,7 @@ jobs:
       run: echo "The build name is ${{ github.event.inputs.build_name }}"
 
 
-  DeployToTestEnviornment:
+  DeployToDevEnviornment:
     runs-on: ubuntu-latest
     steps:
     
@@ -83,8 +83,8 @@ jobs:
         with:
           resourceGroupName: ADF_LAB_KNAUF # (6) your target ADF resource group name
           dataFactoryName: DatafactoryForKnaufDemo # (7) your target ADF name
-          armTemplateFile: build/build-adf-20230815094549/ARMTemplateForFactory.json # (8) ARM template file name ARMTemplateForFactory.json
-          #armTemplateParametersFile: build/build-adf-20230815094549/ARMTemplateParametersForFactory.json # (9) ARM template parameters file name ARMTemplateParametersForFactory.json
+          armTemplateFile: ./build/build-adf-20230815094549/ARMTemplateForFactory.json # (8) ARM template file name ARMTemplateForFactory.json
+          #armTemplateParametersFile: KNAUF_RNA_LAB/build/build-adf-20230815094549/ARMTemplateParametersForFactory.json # (9) ARM template parameters file name ARMTemplateParametersForFactory.json
           
           # skipAzModuleInstallation:  # Parameters which skip the Az module installation. Optional, default is false.​    
     
