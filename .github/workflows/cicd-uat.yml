@@ -45,12 +45,12 @@ jobs:
       working-directory: ${{github.workspace}}/build  # (1) provide the folder location of the package.json file 
     
     - name: Print build name
-      run: echo "The build name is ${{ env.BUILD_NAME }}"
+      run: echo "The build name is ${{ github.event.inputs.build_name }}"
 
     - name: Download a Build Artifact
       uses: actions/download-artifact@v3.0.2
       with:
-        name: ${{ env.BUILD_NAME }} # (5) Artifact name
+        name: build_name # (5) Artifact name
 
     
     
