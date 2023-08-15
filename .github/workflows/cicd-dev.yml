@@ -77,18 +77,10 @@ jobs:
         with:
           name: ${{ env.BUILD_NAME }} # (4) use the same artifact name you used in the previous export step
           path: ${{github.workspace}}/build/${{ env.BUILD_NAME }} 
+      - name: list uploaded files
+        run : ls
 
- #     - run: echo hellooo > ${{github.workspace}}/build/world1.txt
 
-#       - uses: actions/upload-artifact@v3
-#         with:
-#           name: my-artifact
-#           path: ${{github.workspace}}/build/world1.txt
-
-#       - name: Download text file
-#         uses: actions/download-artifact@v3.0.2
-#         with:
-#           name: my-artifact # (5) Artifact name 
       - name: Download a Build Artifact
         uses: actions/download-artifact@v3.0.2
         with:
@@ -100,7 +92,7 @@ jobs:
 #           author_email: t.morovatdar@gmail.com
           # Additional arguments for the git commit command. The --message argument is already set by the message input.
           # Default: ''
-          message: 'try to commit artifact only'
+          message: 'commit artifact ${{ env.BUILD_NAME }}'
           #push: true
       - name: Notify Success
         if: success()
