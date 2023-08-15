@@ -7,9 +7,9 @@ on:
   workflow_dispatch:
     inputs:
       build_name:
-        description: 'Define the artifact name please follow the naming convention uat-adf-timestamp'     
+        description: 'Get the right build name from the ./build directory for UAT deployment'     
         required: true
-        #default: 'uat-adf-$(date +%Y%m%d%H%M%S)'
+        default: 'build-adf-<timestamp>'
 
 
   # Allows you to run this workflow manually from the Actions tab
