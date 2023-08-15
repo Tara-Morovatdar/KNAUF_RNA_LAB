@@ -50,7 +50,7 @@ jobs:
     - name: Download a Build Artifact
       uses: actions/download-artifact@v3.0.2
       with:
-        name: build_name # (5) Artifact name
+        name: ${{github.workspace}}/build/build_name # (5) Artifact name
 
     
     
