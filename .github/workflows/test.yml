@@ -65,15 +65,15 @@ jobs:
   
 
       - name: Validate and Generate ARM template
-        run: npm run build export ${{github.workspace}}/ /subscriptions/73d4603c-76cc-4e1b-bed0-a3780c55b193/resourceGroups/ADF_LAB_KNAUF/providers/Microsoft.DataFactory/factories/DatafactoryForKnaufDemo "ExportedArmTemplate"  # (3) The build command, as validate, needs the root folder location of your repository where all the objects are stored. And the 2nd parameter is the resourceID of the ADF instance. The 3rd parameter is the exported ARM template artifact name 
+        run: npm run build export ${{github.workspace}}/ /subscriptions/73d4603c-76cc-4e1b-bed0-a3780c55b193/resourceGroups/ADF_LAB_KNAUF/providers/Microsoft.DataFactory/factories/DatafactoryForKnaufDemo ${{ env.BUILD_NAME }}  # (3) The build command, as validate, needs the root folder location of your repository where all the objects are stored. And the 2nd parameter is the resourceID of the ADF instance. The 3rd parameter is the exported ARM template artifact name 
         working-directory: ${{github.workspace}}/build
   
   # In order to leverage the artifact in another job, we need to upload it with the upload action 
       - name: upload artifact
         uses: actions/upload-artifact@v3
         with:
-          name: ExportedArmTemplate # (4) use the same artifact name you used in the previous export step
-          path: ${{github.workspace}}/build/ExportedArmTemplate  
+          name: ${{ env.BUILD_NAME }}" # (4) use the same artifact name you used in the previous export step
+          path: ${{github.workspace}}/build/${{ env.BUILD_NAME }}" 
 
  #     - run: echo hellooo > ${{github.workspace}}/build/world1.txt
 
@@ -89,7 +89,7 @@ jobs:
       - name: Download a Build Artifact
         uses: actions/download-artifact@v3.0.2
         with:
-          name: ExportedArmTemplate # (5) Artifact name     
+          name: ${{ env.BUILD_NAME }}" # (5) Artifact name     
       - name: commit the built artifact
         uses: EndBug/add-and-commit@v9
         with:
