@@ -51,6 +51,45 @@ jobs:
       uses: actions/download-artifact@v3.0.2
       with:
         name: ${{github.workspace}}/build/${{ github.event.inputs.build_name }} # (5) Artifact name
+  
+  DeployToTestEnviornment:
+    runs-on: ubuntu-latest
+    steps:
+    
+ # we 1st download the previously uploaded artifact so we can leverage it later in the release job
+      - name: Zip Files
+        uses: vimtor/action-zip@v1
+        with:
+          files: ./build/${{ github.event.inputs.build_name }} 
+          dest: ${{ github.event.inputs.build_name }}
 
+      - name: upload artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: ${{ github.event.inputs.build_name }} # (4) use the same artifact name you used in the previous export step
+        #  path: ${{github.workspace}}/build/${{ env.BUILD_NAME }}   
+      - name: Download a Build Artifact
+        uses: actions/download-artifact@v3.0.2
+        with:
+          name: ${{ github.event.inputs.build_name }} # (5) Artifact name 
+
+
+      - name: Login via Az module
+        uses: azure/login@v1
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+          enable-AzPSSession: true 
+
+      - name: data-factory-deploy
+        uses: Azure/data-factory-deploy-action@v1.2.0
+        with:
+          resourceGroupName: ADF_LAB_KNAUF # (6) your target ADF resource group name
+          dataFactoryName: DatafactoryForKnaufDemo # (7) your target ADF name
+          armTemplateFile: ARMTemplateForFactory.json # (8) ARM template file name ARMTemplateForFactory.json
+          armTemplateParametersFile: ARMTemplateParametersForFactory.json # (9) ARM template parameters file name ARMTemplateParametersForFactory.json
+          
+          # skipAzModuleInstallation:  # Parameters which skip the Az module installation. Optional, default is false.​    
     
     
