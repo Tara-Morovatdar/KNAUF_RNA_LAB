@@ -1,18 +1,21 @@
 # This is a basic workflow to help you get started with Actions
 
-name: Test WF
+name: Dev ADF WF
 
 # Controls when the workflow will run
 on:
   workflow_dispatch:
+#run only when the pull request is closed and it targets main branch
   # pull_request:
-#   push:
-#     branches:
+  #   types: closed
+#   branches:
 #     - main
 #     paths-ignore:
 #       - '.github/**'
 #       - 'build/**'
 #       - 'README.md'
+#       - 'CODEOWNERS'
+
   # Allows you to run this workflow manually from the Actions tab
 permissions:
       id-token: write
@@ -99,5 +102,6 @@ jobs:
           # Default: ''
           message: 'try to commit artifact only'
           #push: true
-
-   
+      - name: Notify Success
+        if: success()
+        run: echo "Artifact successfully built and deployed to Dev environment."
