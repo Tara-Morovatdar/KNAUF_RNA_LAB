@@ -64,7 +64,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: ${{ github.event.inputs.build_name }} # (4) use the same artifact name you used in the previous export step
-        #  path: ${{github.workspace}}/build/${{ env.BUILD_NAME }}   
+          path: ${{github.workspace}}/build/${{ env.BUILD_NAME }}   
       - name: Download a Build Artifact
         uses: actions/download-artifact@v3.0.2
         with:
