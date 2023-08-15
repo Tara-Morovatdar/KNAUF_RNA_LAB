@@ -24,7 +24,8 @@ jobs:
   DeployToDevEnviornment:
     runs-on: ubuntu-latest
     steps:
-    
+      - name: Checkout code
+        uses: actions/checkout@v3
       - name: Print build name
         run: echo "The build name is ${{ github.event.inputs.build_name }}"
       - name: Download a Build Artifact
