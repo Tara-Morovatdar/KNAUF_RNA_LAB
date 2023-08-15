@@ -1,0 +1,53 @@
+# This is a basic workflow to help you get started with Actions
+
+name: cicd-uat
+
+# Controls when the workflow will run
+on:
+  workflow_dispatch:
+    inputs:
+      build_name:
+        description: 'Get the right build name from the ./build directory for UAT deployment'    
+        required: true
+        default: 'build-adf-<timestamp>'
+
+
+  # Allows you to run this workflow manually from the Actions tab
+permissions:
+      id-token: write
+      contents: write
+      packages: write
+jobs:
+  
+
+
+  DeployToDevEnviornment:
+    runs-on: ubuntu-latest
+    steps:
+    
+      - name: Print build name
+        run: echo "The build name is ${{ github.event.inputs.build_name }}"
+      - name: Download a Build Artifact
+        uses: actions/download-artifact@v3.0.2
+        with:
+          name:  ${{ github.event.inputs.build_name }}# (5) Artifact name 
+
+      - name: Login via Az module
+        uses: azure/login@v1
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+          enable-AzPSSession: true 
+
+      - name: data-factory-deploy
+        uses: Azure/data-factory-deploy-action@v1.2.0
+        with:
+          resourceGroupName: ADF_LAB_KNAUF # (6) your target ADF resource group name
+          dataFactoryName: DatafactoryForKnaufDemo # (7) your target ADF name
+          armTemplateFile: ARMTemplateForFactory.json # (8) ARM template file name ARMTemplateForFactory.json
+          #armTemplateParametersFile: KNAUF_RNA_LAB/build/build-adf-20230815094549/ARMTemplateParametersForFactory.json # (9) ARM template parameters file name ARMTemplateParametersForFactory.json
+          
+          # skipAzModuleInstallation:  # Parameters which skip the Az module installation. Optional, default is false.​    
+    
+    
