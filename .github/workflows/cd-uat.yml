@@ -28,10 +28,10 @@ jobs:
         uses: actions/checkout@v3
       - name: Print build name
         run: echo "The build name is ${{ github.event.inputs.build_name }}"
-      - name: Download a Build Artifact
-        uses: actions/download-artifact@v3.0.2
-        with:
-          name:  ${{ github.event.inputs.build_name }}  # (5) Artifact name 
+      # - name: Download a Build Artifact
+      #   uses: actions/download-artifact@v3.0.2
+      #   with:
+      #     name:  ${{ github.event.inputs.build_name }}  # (5) Artifact name 
 
       - name: Login via Az module
         uses: azure/login@v1
@@ -46,7 +46,7 @@ jobs:
         with:
           resourceGroupName: ADF_LAB_KNAUF # (6) your target ADF resource group name
           dataFactoryName: DatafactoryForKnaufDemo # (7) your target ADF name
-          armTemplateFile: ARMTemplateForFactory.json # (8) ARM template file name ARMTemplateForFactory.json
+          armTemplateFile: ./build/${{ github.event.inputs.build_name }}/ARMTemplateForFactory.json # (8) ARM template file name ARMTemplateForFactory.json
           #armTemplateParametersFile: KNAUF_RNA_LAB/build/build-adf-20230815094549/ARMTemplateParametersForFactory.json # (9) ARM template parameters file name ARMTemplateParametersForFactory.json
           
           # skipAzModuleInstallation:  # Parameters which skip the Az module installation. Optional, default is false.​    
