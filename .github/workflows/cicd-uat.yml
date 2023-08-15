@@ -7,9 +7,9 @@ on:
   workflow_dispatch:
     inputs:
       build_name:
-        description: 'Define the artifact name please follow the naming convention uat-adf-timestamp'     
+        description: 'Get the right build name from the ./build directory for UAT deployment'    
         required: true
-        default: 'uat-adf--$(date +%Y%m%d%H%M%S)'
+        default: 'build-adf-<timestamp>'
 
 
   # Allows you to run this workflow manually from the Actions tab
@@ -23,8 +23,11 @@ jobs:
     steps:
     - run: |
         echo "Env: ${{ github.event.inputs.build_name }}" 
-
+        
+    - name: Checkout code
+      uses: actions/checkout@v3
 # Installs Node and the npm packages saved in your package.json file in the build
+
     - name: Setup Node.js environment
       uses: actions/setup-node@v3.4.1
       with:
