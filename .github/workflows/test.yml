@@ -72,8 +72,8 @@ jobs:
       - name: upload artifact
         uses: actions/upload-artifact@v3
         with:
-          name: ${{ env.BUILD_NAME }}" # (4) use the same artifact name you used in the previous export step
-          path: ${{github.workspace}}/build/${{ env.BUILD_NAME }}" 
+          name: ${{ env.BUILD_NAME }} # (4) use the same artifact name you used in the previous export step
+          path: ${{github.workspace}}/build/${{ env.BUILD_NAME }} 
 
  #     - run: echo hellooo > ${{github.workspace}}/build/world1.txt
 
@@ -89,7 +89,7 @@ jobs:
       - name: Download a Build Artifact
         uses: actions/download-artifact@v3.0.2
         with:
-          name: ${{ env.BUILD_NAME }}" # (5) Artifact name     
+          name: ${{ env.BUILD_NAME }} # (5) Artifact name     
       - name: commit the built artifact
         uses: EndBug/add-and-commit@v9
         with:
