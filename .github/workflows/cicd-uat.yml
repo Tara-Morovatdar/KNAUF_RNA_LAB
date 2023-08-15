@@ -5,8 +5,24 @@ name: UAT ADF WF
 # Controls when the workflow will run
 on:
   workflow_dispatch:
+    inputs:
+      build_name:
+        description: 'Define the artifact name please follow the naming convention uat-adf-timestamp'     
+        required: true
+        default: 'uat-adf--$(date +%Y%m%d%H%M%S)'
+
+
   # Allows you to run this workflow manually from the Actions tab
 permissions:
       id-token: write
       contents: write
       packages: write
+jobs:
+  printInputs:
+    runs-on: ubuntu-latest
+    steps:
+    - run: |
+        echo "Env: ${{ github.event.inputs.build_name }}" 
+        
+
+    
