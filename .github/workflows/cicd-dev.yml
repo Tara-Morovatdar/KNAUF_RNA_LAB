@@ -23,12 +23,13 @@ permissions:
 
 
 jobs: 
-  build:
+  Build:
     runs-on: ubuntu-latest
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - name: Checkout code
         uses: actions/checkout@v3
+        
       #The workflow generates a version for the artifact using timestamp versioning scheme.
       - name: Generate build name with timestamp
         id: buildname
@@ -45,17 +46,17 @@ jobs:
           node-version: 14.x
 
       #Caching (to cache the dependencies so the workflow execution time reduces)
-      - name: cache dependencies
+      - name: Cache dependencies
         uses: actions/cache@v3
         with: 
           path: ~/.npm
           key: deps-node-modules-$${{ hashFiles('**/package-lock.json')}}  
 
-      - name: install ADF Utilities package
+      - name: Install ADF Utilities package
         run: npm install
         working-directory: ${{github.workspace}}/build  # (1) provide the folder location of the package.json file
 
-  # Validates all of the Data Factory resources in the repository. You'll get the same validation errors as when "Validate All" is selected.
+      # Validates all of the Data Factory resources in the repository. You'll get the same validation errors as when "Validate All" is selected.
       - name: Validate
         run: npm run build validate ${{github.workspace}}/ /subscriptions/73d4603c-76cc-4e1b-bed0-a3780c55b193/resourceGroups/ADF_LAB_KNAUF/providers/Microsoft.DataFactory/factories/DatafactoryForKnaufDemo 
         # (2) The validate command needs the root folder location of your repository where all the objects are stored. And the 2nd parameter is the resourceID of the ADF instance 
@@ -65,30 +66,26 @@ jobs:
         run: npm run build export ${{github.workspace}}/ /subscriptions/73d4603c-76cc-4e1b-bed0-a3780c55b193/resourceGroups/ADF_LAB_KNAUF/providers/Microsoft.DataFactory/factories/DatafactoryForKnaufDemo ${{ env.BUILD_NAME }}  # (3) The build command, as validate, needs the root folder location of your repository where all the objects are stored. And the 2nd parameter is the resourceID of the ADF instance. The 3rd parameter is the exported ARM template artifact name 
         working-directory: ${{github.workspace}}/build
   
-  # In order to leverage the artifact in another job, we need to upload it with the upload action 
-      - name: upload artifact
+      # In order to leverage the artifact in another job, we need to upload it with the upload action 
+      - name: Upload artifact
         uses: actions/upload-artifact@v3
         with:
           name: ${{ env.BUILD_NAME }} # (4) use the same artifact name you used in the previous export step
           path: ${{github.workspace}}/build/${{ env.BUILD_NAME }} 
-
-      # - name: Download a Build Artifact
-      #   uses: actions/download-artifact@v3.0.2
-      #   with:
-      #     name: ${{ env.BUILD_NAME }} # (5) Artifact name   
-
-      - name: commit the built artifact
+          
+      #Commit updated builds (commit changes made in your workflow run directly to the repo)
+      - name: Commit the built artifact
         uses: EndBug/add-and-commit@v9
         with:
           message: 'commit artifact ${{ env.BUILD_NAME }}'
           #push: true
 
   DeployToDevEnviornment:
-    needs: build
+    needs: Build
     runs-on: ubuntu-latest
     steps:
     
- # we 1st download the previously uploaded artifact so we can leverage it later in the release job  
+      # We first download the previously uploaded artifact so we can leverage it later in the release job  
       - name: Download a Build Artifact
         uses: actions/download-artifact@v3.0.2
         with:
@@ -102,15 +99,13 @@ jobs:
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
           enable-AzPSSession: true 
 
-      - name: data-factory-deploy
+      - name: Data-factory-deploy
         uses: Azure/data-factory-deploy-action@v1.2.0
         with:
           resourceGroupName: ADF_LAB_KNAUF # (6) your target ADF resource group name
           dataFactoryName: DatafactoryForKnaufDemo # (7) your target ADF name
-          armTemplateFile: ./build/${{ github.event.inputs.build_name }}/ARMTemplateForFactory.json # (8) ARM template file name ARMTemplateForFactory.json
-          #armTemplateParametersFile: KNAUF_RNA_LAB/build/build-adf-20230815094549/ARMTemplateParametersForFactory.json # (9) ARM template parameters file name ARMTemplateParametersForFactory.json
-          
-          # skipAzModuleInstallation:  # Parameters which skip the Az module installation. Optional, default is false.​  
+          armTemplateFile: ARMTemplateForFactory.json # (8) ARM template file name ARMTemplateForFactory.json
+          armTemplateParametersFile: ARMTemplateParametersForFactory.json  #(9) ARM template parameters file name 
       - name: Notify Success
         if: success()
         run: echo "Artifact successfully built and deployed to Dev environment."  
