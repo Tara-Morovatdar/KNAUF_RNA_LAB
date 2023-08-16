@@ -29,7 +29,7 @@ jobs:
   Build:
     runs-on: ubuntu-latest
     outputs:
-      BUILd_NAME: ${{ steps.buildname.outputs.BUILD_NAME }}
+      BUILD_NAME: ${{ steps.buildname.outputs.BUILD_NAME }}
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - name: Checkout code
@@ -39,10 +39,10 @@ jobs:
         id: buildname
         # run: |
         #   echo "BUILD_NAME=build-adf-$(date +%Y%m%d%H%M%S)" >> $GITHUB_ENV
-        run: echo "::set-output name=BUILD_NAME::build-adf-$(date +%Y%m%d%H%M%S)"
+        run: echo "::set-output name=BUILD_NAME::build-adf-$(date +%Y%m%d%H%M%S)" >> $GITHUB_ENV
       - name: Print build name
         run: |
-          echo "The build name is $BUILD_NAME"
+          echo "The build name is ${{ env.BUILD_NAME }}"
      
 
       # Installs Node and the npm packages saved in your package.json file in the build
@@ -76,8 +76,8 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-artifact@v3
         with:
-          name: $BUILD_NAME # (4) use the same artifact name you used in the previous export step
-          path: ${{github.workspace}}/build/$BUILD_NAME
+          name: ${{ env.BUILD_NAME }} # (4) use the same artifact name you used in the previous export step
+          path: ${{github.workspace}}/build/${{ env.BUILD_NAME }}
           
 
 
@@ -87,7 +87,7 @@ jobs:
     steps:
       - name: Access Variable
         run: |
-          echo "BUILD_NAME==${{ needs.Build.outputs.BUILD_NAME }}"
+          echo "BUILD_NAME==${{ needs.Build.outputs.BUILD_NAME }}" >> $GITHUB_ENV
         
       # We first download the previously uploaded artifact so we can leverage it later in the release job  
       - name: Download a Build Artifact
