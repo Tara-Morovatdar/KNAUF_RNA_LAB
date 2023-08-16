@@ -18,9 +18,10 @@ This workflow automates the build, validation, export, and deployment process of
 6. Generate ARM templates for Data Factory resources.
 7. Upload the generated artifact.
 8. Download the artifact in the deployment job.
-9. Login to Azure using the Az module.
-10. Deploy Data Factory resources using the Azure Data Factory Deploy action.
-11. Notify success.
+9. Commit updated builds (commit changes made in your workflow run directly to the repo) 
+10. Login to Azure using the Az module.
+11. Deploy Data Factory resources using the Azure Data Factory Deploy action.
+12. Notify success.
 
 ### Workflow Configuration
 
