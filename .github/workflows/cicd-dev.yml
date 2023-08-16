@@ -37,12 +37,15 @@ jobs:
         
       - name: Generate build name with timestamp
         id: buildname
-        # run: |
+        run: |
+          BUILD_NAME= "build-adf-$(date +%Y%m%d%H%M%S)"
+          echo "BUILD_NAME=$BUILD_NAME" >> "$GITHUB_OUTPUT"
         #   echo "BUILD_NAME=build-adf-$(date +%Y%m%d%H%M%S)" >> $GITHUB_ENV
-        run: echo "::set-output name=BUILD_NAME::build-adf-$(date +%Y%m%d%H%M%S)" >> $GITHUB_ENV
+        #run: echo "::set-output name=BUILD_NAME::build-adf-$(date +%Y%m%d%H%M%S)" >> "$GITHUB_OUTPUT"
       - name: Print build name
         run: |
-          echo "The build name is ${{ env.BUILD_NAME }}"
+          
+          echo "The build name is ${{ steps.buildname.outputs.BUILD_NAME }}"
      
 
       # Installs Node and the npm packages saved in your package.json file in the build
@@ -87,7 +90,7 @@ jobs:
     steps:
       - name: Access Variable
         run: |
-          echo "BUILD_NAME==${{ needs.Build.outputs.BUILD_NAME }}" >> $GITHUB_ENV
+          echo "BUILD_NAME==${{ needs.Build.outputs.BUILD_NAME }}" 
         
       # We first download the previously uploaded artifact so we can leverage it later in the release job  
       - name: Download a Build Artifact
