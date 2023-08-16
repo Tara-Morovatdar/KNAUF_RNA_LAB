@@ -104,10 +104,10 @@ jobs:
             
             
        #Commit updated builds (commit changes made in your workflow run directly to the repo)     
-      - name: Commit the built artifact
-        uses: EndBug/add-and-commit@v9
-        with:
-          message: 'commit artifact ${{ env.BUILD_NAME }}'
+      # - name: Commit the built artifact
+      #   uses: EndBug/add-and-commit@v9
+      #   with:
+      #     message: 'commit artifact ${{ env.BUILD_NAME }}'
                   
       - name: Notify Success
         if: success()
