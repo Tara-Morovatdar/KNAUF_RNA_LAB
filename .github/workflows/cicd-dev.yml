@@ -1,22 +1,21 @@
 # This is a basic workflow to help you get started with Actions
 
 name: cicd-dev
-
 # Controls when the workflow will run
 on:
   workflow_dispatch:
-#run only when the pull request is closed and it targets main branch
+#Run only when the pull request is closed and it targets main branch
   # pull_request:
   #   types: closed
-#   branches:
-#     - main
-#     paths-ignore:
-#       - '.github/**'
-#       - 'build/**'
-#       - 'README.md'
-#       - 'CODEOWNERS'
+  #   branches:
+  #   - main
+  #   paths-ignore:
+  #     - '.github/**'
+  #     - 'build/**'
+  #     - 'README.md'
+  #     - 'CODEOWNERS'
 
-  # Allows you to run this workflow manually from the Actions tab
+# Modify the default permissions granted to GITHUB_TOKEN.
 permissions:
       id-token: write
       contents: write
@@ -26,13 +25,11 @@ permissions:
 jobs: 
   build:
     runs-on: ubuntu-latest
-
-    # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - name: Checkout code
         uses: actions/checkout@v3
-
+      #The workflow generates a version for the artifact using timestamp versioning scheme.
       - name: Generate build name with timestamp
         id: buildname
         run: |
@@ -47,7 +44,7 @@ jobs:
         with:
           node-version: 14.x
 
-      #Caching (you have to  repeat this step everytime before the install job so it uses the cache)
+      #Caching (to cache the dependencies so the workflow execution time reduces)
       - name: cache dependencies
         uses: actions/cache@v3
         with: 
@@ -62,8 +59,7 @@ jobs:
       - name: Validate
         run: npm run build validate ${{github.workspace}}/ /subscriptions/73d4603c-76cc-4e1b-bed0-a3780c55b193/resourceGroups/ADF_LAB_KNAUF/providers/Microsoft.DataFactory/factories/DatafactoryForKnaufDemo 
         # (2) The validate command needs the root folder location of your repository where all the objects are stored. And the 2nd parameter is the resourceID of the ADF instance 
-        working-directory: ${{github.workspace}}/build
-  
+        working-directory: ${{github.workspace}}/build  
 
       - name: Validate and Generate ARM template
         run: npm run build export ${{github.workspace}}/ /subscriptions/73d4603c-76cc-4e1b-bed0-a3780c55b193/resourceGroups/ADF_LAB_KNAUF/providers/Microsoft.DataFactory/factories/DatafactoryForKnaufDemo ${{ env.BUILD_NAME }}  # (3) The build command, as validate, needs the root folder location of your repository where all the objects are stored. And the 2nd parameter is the resourceID of the ADF instance. The 3rd parameter is the exported ARM template artifact name 
@@ -75,9 +71,6 @@ jobs:
         with:
           name: ${{ env.BUILD_NAME }} # (4) use the same artifact name you used in the previous export step
           path: ${{github.workspace}}/build/${{ env.BUILD_NAME }} 
-      - name: list uploaded files
-        run : ls
-
 
       # - name: Download a Build Artifact
       #   uses: actions/download-artifact@v3.0.2
@@ -87,13 +80,13 @@ jobs:
       - name: commit the built artifact
         uses: EndBug/add-and-commit@v9
         with:
-        message: 'commit artifact ${{ env.BUILD_NAME }}'
+          message: 'commit artifact ${{ env.BUILD_NAME }}'
           #push: true
 
-    DeployToDevEnviornment:
-      needs: build
-      runs-on: ubuntu-latest
-      steps:
+  DeployToDevEnviornment:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
     
  # we 1st download the previously uploaded artifact so we can leverage it later in the release job  
       - name: Download a Build Artifact
