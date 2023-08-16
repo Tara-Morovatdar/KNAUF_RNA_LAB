@@ -75,6 +75,12 @@ jobs:
           name: ${{ steps.buildname.outputs.BUILD_NAME }} # (4) use the same artifact name you used in the previous export step
           path: ${{github.workspace}}/build/${{ steps.buildname.outputs.BUILD_NAME }}
           
+      #Commit updated builds (commit changes made in your workflow run directly to the repo)     
+      - name: Commit the built artifact
+        uses: EndBug/add-and-commit@v9
+        with:
+          message: 'commit artifact ${{ steps.buildname.outputs.BUILD_NAME }}'
+          
 
 
   DeployToDevEnviornment:
@@ -110,11 +116,7 @@ jobs:
           # (9) ARM template parameters file name ARMTemplateParametersForFactory.json  
             
             
-       #Commit updated builds (commit changes made in your workflow run directly to the repo)     
-      - name: Commit the built artifact
-        uses: EndBug/add-and-commit@v9
-        with:
-          message: 'commit artifact ${{ needs.Build.outputs.BUILD_NAME }}'
+
                   
       - name: Notify Success
         if: success()
