@@ -38,9 +38,9 @@ jobs:
         
       - name: Generate build name with timestamp
         id: buildname
-        run: |
-          echo "BUILD_NAME=build-adf-$(date +%Y%m%d%H%M%S)" >> $GITHUB_ENV
-        #run: echo "::set-output name=BUILD_NAME::build-adf-$(date +%Y%m%d%H%M%S)"
+        # run: |
+        #   echo "BUILD_NAME=build-adf-$(date +%Y%m%d%H%M%S)" >> $GITHUB_ENV
+        run: echo "::set-output name=BUILD_NAME::build-adf-$(date +%Y%m%d%H%M%S)"
       - name: Print build name
         run: |
           echo "The build name is ${{ env.BUILD_NAME }}"
