@@ -29,16 +29,15 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - name: Checkout code
         uses: actions/checkout@v3
-        
+
       #The workflow generates a version for the artifact using timestamp versioning scheme.
-      #The workflow generates a version for the artifact using timestamp versioning scheme.
-      # - name: Generate build name with timestamp
-      #   id: buildname
-      #   run: |
-      #     echo "BUILD_NAME=build-adf-$(date +%Y%m%d%H%M%S)" >> $GITHUB_ENV
-      # - name: Print build name
-      #   run: |
-      #     echo "The build name is ${{ env.BUILD_NAME }}"
+      - name: Generate build name with timestamp
+        id: buildname
+        run: |
+          echo "BUILD_NAME=build-adf-$(date +%Y%m%d%H%M%S)" >> $GITHUB_ENV
+      - name: Print build name
+        run: |
+          echo "The build name is ${{ env.BUILD_NAME }}"
 
       # Installs Node and the npm packages saved in your package.json file in the build
       - name: Setup Node.js environment
@@ -107,10 +106,10 @@ jobs:
             
             
        #Commit updated builds (commit changes made in your workflow run directly to the repo)     
-      # - name: Commit the built artifact
-      #   uses: EndBug/add-and-commit@v9
-      #   with:
-      #     message: 'commit artifact ExportedARMTemplate'
+      - name: Commit the built artifact
+        uses: EndBug/add-and-commit@v9
+        with:
+          message: 'commit artifact ${{ env.BUILD_NAME }}'
                   
       - name: Notify Success
         if: success()
