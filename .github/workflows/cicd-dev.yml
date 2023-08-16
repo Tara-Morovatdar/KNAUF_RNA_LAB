@@ -22,18 +22,25 @@ permissions:
       packages: write
 
  #The workflow generates a version for the artifact using timestamp versioning scheme.
-env:
-  BUILD_NAME : build-adf-$(date +%Y%m%d%H%M%S)
+# env:
+#   BUILD_NAME : build-adf-$(date +%Y%m%d%H%M%S)
 
 
 jobs: 
   Build:
     runs-on: ubuntu-latest
+    outputs:
+      BUILd_NAME: ${{ steps.buildname.outputs.BUILD_NAME }}
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - name: Checkout code
         uses: actions/checkout@v3
         
+      - name: Generate build name with timestamp
+        id: buildname
+        run: |
+          echo "BUILD_NAME=build-adf-$(date +%Y%m%d%H%M%S)" >> $GITHUB_ENV
+        #run: echo "::set-output name=BUILD_NAME::build-adf-$(date +%Y%m%d%H%M%S)"
       - name: Print build name
         run: |
           echo "The build name is ${{ env.BUILD_NAME }}"
@@ -76,15 +83,18 @@ jobs:
 
 
   DeployToDevEnviornment:
-    needs: Build
     runs-on: ubuntu-latest
+    needs: Build
     steps:
-    
+      - name: Access Variable
+        run: |
+          echo "BUILd_NAME==${{ needs.Build.outputs.BUILd_NAME }}"
+        
       # We first download the previously uploaded artifact so we can leverage it later in the release job  
       - name: Download a Build Artifact
         uses: actions/download-artifact@v3.0.2
         with:
-          name: ${{ env.BUILD_NAME }} # (5) Artifact name   
+          name: ${{ env.BUILD_NAME }} # (5) Artifact name  
 
         
       - name: Login via Az module
