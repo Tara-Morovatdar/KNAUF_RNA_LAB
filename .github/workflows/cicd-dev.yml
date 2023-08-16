@@ -5,25 +5,21 @@ name: cicd-dev
 on:
   workflow_dispatch:
 #Run only when the pull request is closed and it targets main branch
-  # pull_request:
-  #   types: closed
-  #   branches:
-  #   - main
-  #   paths-ignore:
-  #     - '.github/**'
-  #     - 'build/**'
-  #     - 'README.md'
-  #     - 'CODEOWNERS'
+  pull_request:
+    types: closed
+    branches:
+    - main
+    paths-ignore:
+      - '.github/**'
+      - 'build/**'
+      - 'README.md'
+      - 'CODEOWNERS'
 
 # Modify the default permissions granted to GITHUB_TOKEN.
 permissions:
       id-token: write
       contents: write
       packages: write
-
- #The workflow generates a version for the artifact using timestamp versioning scheme.
-
-
 
 jobs: 
   Build:
@@ -118,7 +114,7 @@ jobs:
       - name: Commit the built artifact
         uses: EndBug/add-and-commit@v9
         with:
-          message: 'commit artifact ${{ env.BUILD_NAME }}'
+          message: 'commit artifact ${{ needs.Build.outputs.BUILD_NAME }}'
                   
       - name: Notify Success
         if: success()
