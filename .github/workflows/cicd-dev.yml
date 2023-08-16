@@ -73,12 +73,7 @@ jobs:
           name: ${{ env.BUILD_NAME }} # (4) use the same artifact name you used in the previous export step
           path: ${{github.workspace}}/build/${{ env.BUILD_NAME }} 
           
-      #Commit updated builds (commit changes made in your workflow run directly to the repo)
-      - name: Commit the built artifact
-        uses: EndBug/add-and-commit@v9
-        with:
-          message: 'commit artifact ${{ env.BUILD_NAME }}'
-          #push: true
+
 
   DeployToDevEnviornment:
     needs: Build
@@ -106,6 +101,14 @@ jobs:
           dataFactoryName: DatafactoryForKnaufDemo # (7) your target ADF name
           armTemplateFile: ARMTemplateForFactory.json # (8) ARM template file name ARMTemplateForFactory.json
           armTemplateParametersFile: ARMTemplateParametersForFactory.json  #(9) ARM template parameters file name 
+            
+            
+       #Commit updated builds (commit changes made in your workflow run directly to the repo)     
+      - name: Commit the built artifact
+        uses: EndBug/add-and-commit@v9
+        with:
+          message: 'commit artifact ${{ env.BUILD_NAME }}'
+                  
       - name: Notify Success
         if: success()
         run: echo "Artifact successfully built and deployed to Dev environment."  
