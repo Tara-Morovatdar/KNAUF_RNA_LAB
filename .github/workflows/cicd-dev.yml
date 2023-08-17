@@ -5,8 +5,8 @@ name: cicd-dev
 on:
   workflow_dispatch:
 #Run only when the pull request is closed and it targets main branch
-  pull_request:
-    types: closed
+  push:
+    
     branches:
     - main
     paths-ignore:
