@@ -30,6 +30,13 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - name: Checkout code
         uses: actions/checkout@v3
+       
+      - name: dump
+        run: |
+          echo 'github.workspace === ${{ github.workspace }}'
+          echo "GITHUB_WORKSPACE === $GITHUB_WORKSPACE"
+          echo 'runner.workspace === ${{ runner.workspace }}'
+          echo "RUNNER_WORKSPACE === $RUNNER_WORKSPACE"
         
       - name: Generate build name with timestamp
         id: buildname
