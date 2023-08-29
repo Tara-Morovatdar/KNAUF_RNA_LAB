@@ -63,7 +63,7 @@ jobs:
 
       - name: Install ADF Utilities package
         run: npm install
-        working-directory: $RUNNER_WORKSPACE/build  # (1) provide the folder location of the package.json file
+        working-directory: ./build  # (1) provide the folder location of the package.json file
 
       # Validates all of the Data Factory resources in the repository. You'll get the same validation errors as when "Validate All" is selected.
       - name: Validate
