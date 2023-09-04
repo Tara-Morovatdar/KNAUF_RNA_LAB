@@ -3,13 +3,43 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "factoryName": {
-            "value": "DatafactoryForKnaufDemo"
+            "value": "AZ-WEUR-DEV-RNA-ADF01"
         },
-        "LS_AzureBlobStorage_raw_connectionString": {
-            "value": ""
+        "AZ_WEUR_XXX_RNA_KV01_properties_typeProperties_baseUrl": {
+            "value": "https://AZ-WEUR-DEV-RNA-KV01.vault.azure.net/"
         },
-        "LS_AzureSqlDatabaseKnauf_connectionString": {
-            "value": ""
+        "RNASA01_BRONZE_LKSVC01_properties_typeProperties_url": {
+            "value": "https://azweurdevrnasa01.dfs.core.windows.net/"
+        },
+        "RNASA01_SILVER_LKSVC01_properties_typeProperties_url": {
+            "value": "https://azweurdevrnasa01.dfs.core.windows.net/"
+        },
+        "SF_LKSVC01_properties_typeProperties_environmentUrl": {
+            "value": "https://knauf--uat.sandbox.my.salesforce.com"
+        },
+        "SF_LKSVC01_properties_typeProperties_username": {
+            "value": "css-onecrm-integ@knauf.com.uat"
+        },
+        "SYNWS01_ARTIFACTS_LKSVC01_properties_typeProperties_endpoint": {
+            "value": "https://az-weur-dev-rna-synws01.dev.azuresynapse.net"
+        },
+        "AZ-WEUR-XXX-RNA-SA01-DFS-MPE01_properties_privateLinkResourceId": {
+            "value": "/subscriptions/1e97185d-6892-4844-9688-e3b26adccca2/resourceGroups/AZ-WEUR-DEV-RNA-RG01/providers/Microsoft.Storage/storageAccounts/azweurdevrnasa01"
+        },
+        "AZ-WEUR-XXX-RNA-SA01-DFS-MPE01_properties_groupId": {
+            "value": "dfs"
+        },
+        "AZ-WEUR-XXX-RNA-SYNWS01-DEV-MPE01_properties_privateLinkResourceId": {
+            "value": "/subscriptions/1e97185d-6892-4844-9688-e3b26adccca2/resourceGroups/AZ-WEUR-DEV-RNA-RG01/providers/Microsoft.Synapse/workspaces/az-weur-dev-rna-synws01"
+        },
+        "AZ-WEUR-XXX-RNA-SYNWS01-DEV-MPE01_properties_groupId": {
+            "value": "dev"
+        },
+        "AZ-WEUR-XXX-RNA-SYNWS01-SQL-MPE01_properties_privateLinkResourceId": {
+            "value": "/subscriptions/1e97185d-6892-4844-9688-e3b26adccca2/resourceGroups/AZ-WEUR-DEV-RNA-RG01/providers/Microsoft.Synapse/workspaces/az-weur-dev-rna-synws01"
+        },
+        "AZ-WEUR-XXX-RNA-SYNWS01-SQL-MPE01_properties_groupId": {
+            "value": "sql"
         }
     }
 }
