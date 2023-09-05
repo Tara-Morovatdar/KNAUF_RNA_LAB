@@ -18,7 +18,7 @@ jobs:
   deploy:
   # Deploy to prod environment AZ-WEUR-PROD-RNA-RG01
     runs-on: ubuntu-latest
-    environment: UAT
+    environment: PROD
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -39,9 +39,9 @@ jobs:
           resourceGroupName: ADF_LAB_KNAUF_UAT #AZ-WEUR-PROD-RNA-RG01 (6) your target ADF resource group name
           dataFactoryName: adfKnaufUat #AZ-WEUR-PROD-RNA-ADF01 (7) your target ADF name
           armTemplateFile: ./build/${{ github.event.inputs.build_name }}/ARMTemplateForFactory.json # (8) ARM template file name ARMTemplateForFactory.json
-          armTemplateParametersFile: ./build/${{ github.event.inputs.build_name }}/ARMTemplateParametersForFactory.json 
-        #   additionalParameters: factoryName=${{ vars.FACTORYNAME }} AzureKeyVault1_properties_typeProperties_baseUrl=${{ vars.AZUREKEYVAULT1_BASEURL }}
-        # # (9) ARM template parameters file name ARMTemplateParametersForFactory.json    
+          armTemplateParametersFile: ./build/${{ github.event.inputs.build_name }}/ARMTemplateParametersForFactory.json # (9) ARM template parameters file name ARMTemplateParametersForFactory.json    
+          #additionalParameters: factoryName=${{ vars.factoryName }} AZ_WEUR_XXX_RNA_KV01_properties_typeProperties_baseUrl=${{ vars.KV_baseUrl }} RNASA01_BRONZE_LKSVC01_properties_typeProperties_url=${{ vars.BRONZE_typeProperties_url }} RNASA01_SILVER_LKSVC01_properties_typeProperties_url= ${{ vars.SILVER_typeProperties_url }} SF_LKSVC01_properties_typeProperties_environmentUrl= ${{ vars.SF_environmentUrl }} SF_LKSVC01_properties_typeProperties_username= ${{ vars.SF_username }} SYNWS01_ARTIFACTS_LKSVC01_properties_typeProperties_endpoint= ${{ vars.SYN_endpoint}} AZ-WEUR-XXX-RNA-SA01-DFS-MPE01_properties_privateLinkResourceId = ${{ vars.DFS_privateLinkResourceId}} AZ-WEUR-XXX-RNA-SA01-DFS-MPE01_properties_groupId= ${{ vars.DFS_groupId}} AZ-WEUR-XXX-RNA-SYNWS01-DEV-MPE01_properties_privateLinkResourceId= ${{ vars.SYN_privateLinkResourceId}} AZ-WEUR-XXX-RNA-SYNWS01-DEV-MPE01_properties_groupId= ${{ vars.SYN_groupId}} AZ-WEUR-XXX-RNA-SYNWS01-SQL-MPE01_properties_privateLinkResourceId = ${{ vars.SQL_privateLinkResourceId}} AZ-WEUR-XXX-RNA-SYNWS01-SQL-MPE01_properties_groupId= ${{ vars.SQL_groupId}}
+
       - name: Notify Success
         if: success()
         run: echo "Artifact successfully deployed to PROD environment." 
