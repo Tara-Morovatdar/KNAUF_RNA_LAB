@@ -1,18 +1,30 @@
-name: Create Release Branch
-on: 
-  workflow_dispatch: # This allows you to manually trigger the workflow
+name: CD- PROD
+on:
+  workflow_dispatch:
+    inputs:
+      build_name:
+        description: 'Get the right build name from the ./build directory for PROD deployment'    
+        required: true
+        default: 'build-adf-<timestamp>'
 
+
+# Allows you to run this workflow manually from the Actions tab
+permissions:
+      id-token: write
+      contents: write
+      packages: write
 jobs:
-  branch:
-    runs-on: ubuntu-latest
-    environment: PROD
-    steps:
-      # Checks out your repository under $GITHUB_WORKSPACE
-      - name: Checkout
-        uses: actions/checkout@v2
-        with:
-          token: ${{ secrets.BUILD_PAT }}
 
+  deploy:
+  # Deploy to prod environment AZ-WEUR-PROD-RNA-RG01
+    runs-on: ubuntu-latest
+    environment: UAT
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Print build name
+        run: echo "The build name is ${{ github.event.inputs.build_name }}"
+        
       - name: Login via Az module
         uses: azure/login@v1
         with:
@@ -24,15 +36,14 @@ jobs:
       - name: data-factory-deploy
         uses: Azure/data-factory-deploy-action@v1.2.0
         with:
-          resourceGroupName: ADF_LAB_KNAUF_PROD # (6) your target ADF resource group name
-          dataFactoryName: adfKnaufPROD # (7) your target ADF name
+          resourceGroupName: ADF_LAB_KNAUF_UAT #AZ-WEUR-PROD-RNA-RG01 (6) your target ADF resource group name
+          dataFactoryName: adfKnaufUat #AZ-WEUR-PROD-RNA-ADF01 (7) your target ADF name
           armTemplateFile: ./build/${{ github.event.inputs.build_name }}/ARMTemplateForFactory.json # (8) ARM template file name ARMTemplateForFactory.json
-          #armTemplateParametersFile: ./build/${{ github.event.inputs.build_name }}/ARMTemplateParametersForFactory.json AZ-WEUR-Test-RNA-ADF01 
-          # (9) ARM template parameters file name ARMTemplateParametersForFactory.json    
+          armTemplateParametersFile: ./build/${{ github.event.inputs.build_name }}/ARMTemplateParametersForFactory.json 
+        #   additionalParameters: factoryName=${{ vars.FACTORYNAME }} AzureKeyVault1_properties_typeProperties_baseUrl=${{ vars.AZUREKEYVAULT1_BASEURL }}
+        # # (9) ARM template parameters file name ARMTemplateParametersForFactory.json    
+      - name: Notify Success
+        if: success()
+        run: echo "Artifact successfully deployed to PROD environment." 
 
-      - name: Create Release Branch
-        run: |
-          git checkout -b release
-          git config --global user.name 'github-actions[bot]'
-          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
-          git push origin release
+  
