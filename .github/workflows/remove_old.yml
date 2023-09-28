@@ -1,31 +1,74 @@
-name: Calculate Timestamp for 30 Days Ago
+# name: Calculate Timestamp for 30 Days Ago
+
+# on:
+#   push:
+#     branches:
+#       - main  # Adjust this to the branch you want to monitor for changes
+
+# jobs:
+#   calculate_timestamp:
+#     runs-on: ubuntu-latest
+
+#     steps:
+#     - name: Calculate Timestamp
+#       id: timestamp
+#       run: |
+#         # Calculate the timestamp for 30 days ago (in seconds since the epoch)
+#         timestamp1=$(date -d "30 days ago" +%Y%m%d%H%M%S)
+#         timestamp2=$(date -d "15 days ago" +%Y%m%d%H%M%S)
+#         # Output the timestamp as an action output
+#         echo "::set-output name=timestamp1::$timestamp1"
+#         echo "::set-output name=timestamp2::$timestamp2"
+
+#     - name: Display Timestamp
+#       run: |
+#         time_diff= $((timestamp2 - timestamp1))
+#         echo "::set-output name=time_diff::$time_diff_seconds"
+#         # Retrieve the timestamp calculated in the previous step
+#         #TIMESTAMP=${{ steps.timestamp.outputs.timestamp }}
+        
+#         # Display the timestamp
+#         #echo "Timestamp for 30 days ago: $TIMESTAMP"
+
+
+
+name: Delete Old Directories
 
 on:
-  push:
-    branches:
-      - main  # Adjust this to the branch you want to monitor for changes
+  workflow_dispatch:
+  # schedule:
+  #   - cron: '0 * * * *'  # Run every hour
 
 jobs:
-  calculate_timestamp:
+  delete_old_dirs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Calculate Timestamp
-      id: timestamp
-      run: |
-        # Calculate the timestamp for 30 days ago (in seconds since the epoch)
-        timestamp1=$(date -d "30 days ago" +%Y%m%d%H%M%S)
-        timestamp2=$(date -d "15 days ago" +%Y%m%d%H%M%S)
-        # Output the timestamp as an action output
-        echo "::set-output name=timestamp1::$timestamp1"
-        echo "::set-output name=timestamp2::$timestamp2"
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-    - name: Display Timestamp
-      run: |
-        time_diff= $((timestamp2 - timestamp1))
-        echo "::set-output name=time_diff::$time_diff_seconds"
-        # Retrieve the timestamp calculated in the previous step
-        #TIMESTAMP=${{ steps.timestamp.outputs.timestamp }}
-        
-        # Display the timestamp
-        #echo "Timestamp for 30 days ago: $TIMESTAMP"
+      - name: Find and delete old directories
+        run: |
+          # Calculate the timestamp one hour ago
+          timestamp=$(date -d "30 days ago" '+%Y-%m-%dT%H:%M:%S')
+
+          # Find directories committed more than 1 hour ago and delete them
+          git log --directories=only --format="%aD %h" |
+            grep -E "^$timestamp.*" |
+            cut -d ' ' -f 2 |
+            while read -r dir; do
+              if [ -d "$dir" ]; then
+                echo "Deleting directory: $dir"
+                rm -rf "$dir"
+              fi
+            done
+
+      - name: Commit and push changes
+        run: |
+          git config --global user.email "t.morovatdar@gmail.com"
+          git config --global user.name "Tara-Morovatdar"
+
+          git add -A
+          git commit -m "Delete old directories"
+          git push
+
