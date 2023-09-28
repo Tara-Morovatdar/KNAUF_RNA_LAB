@@ -1,0 +1,28 @@
+name: Calculate Timestamp for 30 Days Ago
+
+on:
+  push:
+    branches:
+      - main  # Adjust this to the branch you want to monitor for changes
+
+jobs:
+  calculate_timestamp:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Calculate Timestamp
+      id: timestamp
+      run: |
+        # Calculate the timestamp for 30 days ago (in seconds since the epoch)
+        TIMESTAMP=$(date -d "30 days ago" +%s)
+        
+        # Output the timestamp as an action output
+        echo "::set-output name=timestamp::$TIMESTAMP"
+
+    - name: Display Timestamp
+      run: |
+        # Retrieve the timestamp calculated in the previous step
+        TIMESTAMP=${{ steps.timestamp.outputs.timestamp }}
+        
+        # Display the timestamp
+        echo "Timestamp for 30 days ago: $TIMESTAMP"
