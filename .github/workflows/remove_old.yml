@@ -14,7 +14,7 @@ jobs:
       id: timestamp
       run: |
         # Calculate the timestamp for 30 days ago (in seconds since the epoch)
-        TIMESTAMP=$(date -d "30 days ago" +%s)
+        TIMESTAMP=$(date -d "30 days ago" +%Y%m%d%H%M%S)
         
         # Output the timestamp as an action output
         echo "::set-output name=timestamp::$TIMESTAMP"
