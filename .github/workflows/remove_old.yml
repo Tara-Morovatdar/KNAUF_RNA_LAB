@@ -14,15 +14,18 @@ jobs:
       id: timestamp
       run: |
         # Calculate the timestamp for 30 days ago (in seconds since the epoch)
-        TIMESTAMP=$(date -d "30 days ago" +%Y%m%d%H%M%S)
-        
+        timestamp1=$(date -d "30 days ago" +%Y%m%d%H%M%S)
+        timestamp2=$(date -d "15 days ago" +%Y%m%d%H%M%S)
         # Output the timestamp as an action output
-        echo "::set-output name=timestamp::$TIMESTAMP"
+        echo "::set-output name=timestamp1::$timestamp1"
+        echo "::set-output name=timestamp2::$timestamp2"
 
     - name: Display Timestamp
       run: |
+        time_diff= $((timestamp2 - timestamp1))
+        echo "::set-output name=time_diff::$time_diff_seconds"
         # Retrieve the timestamp calculated in the previous step
-        TIMESTAMP=${{ steps.timestamp.outputs.timestamp }}
+        #TIMESTAMP=${{ steps.timestamp.outputs.timestamp }}
         
         # Display the timestamp
-        echo "Timestamp for 30 days ago: $TIMESTAMP"
+        #echo "Timestamp for 30 days ago: $TIMESTAMP"
