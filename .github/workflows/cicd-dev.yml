@@ -2,6 +2,7 @@
 
 name: cicd-dev
 # Controls when the workflow will run
+run-name: Deploy to Dev environment by @${{ github.actor }}
 on:
   workflow_dispatch:
 #Run only when the pull request is closed and it targets main branch
