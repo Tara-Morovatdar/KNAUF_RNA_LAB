@@ -1,0 +1,9 @@
+{
+	"name": "DevOpsDemoDev",
+	"location": "eastus",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "c8fceeac-0749-49a4-8e47-cfaa15c76076",
+		"tenantId": "ad200093-0cba-48cb-9853-16fb53354a4d"
+	}
+}
