@@ -111,11 +111,8 @@ jobs:
           dataFactoryName: DatafactoryForKnaufDemo # (7) your target ADF name
           armTemplateFile: ARMTemplateForFactory.json # (8) ARM template file name ARMTemplateForFactory.json
           armTemplateParametersFile: ARMTemplateParametersForFactory.json  
-          # (9) ARM template parameters file name ARMTemplateParametersForFactory.json  
-            
-            
-
-                  
+          # (9) ARM template parameters file name ARMTemplateParametersForFactory.json          
+  
       - name: Notify Success
         if: success()
         run: echo "Artifact successfully built and deployed to Dev environment."  
