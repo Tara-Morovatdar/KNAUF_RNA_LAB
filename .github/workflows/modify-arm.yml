@@ -14,24 +14,8 @@ jobs:
     - name: Find and Replace in JSON
       run: |
         # Define the search and replace strings
-        SEARCH_STRING="{
-            "name": "[concat(parameters('factoryName'), '/SHIR01-RUN01')]",
-            "type": "Microsoft.DataFactory/factories/integrationRuntimes",
-            "apiVersion": "2018-06-01",
-            "properties": {
-                "type": "SelfHosted",
-                "typeProperties": {}
-            },
-            "dependsOn": []
-        "
-        REPLACE_STRING="{"name": "[concat(parameters('factoryName'), '/SHIR01-RUN01')]",
-            "properties": {
-            "type": "SelfHosted",
-            "typeProperties": {
-            "linkedInfo": {
-                "resourceId": "/subscriptions/1e97185d-6892-4844-9688-e3b26adccca2/resourcegroups/AZ-WEUR-PROD-RNA-RG01/providers/Microsoft.DataFactory/factories/AZ-WEUR-PROD-RNA-ADF01/integrationruntimes/SHIR01-RUN01",
-                "authorizationType": "Rbac"
-            }        }  }}"
+        SEARCH_STRING=""name": "[concat(parameters('factoryName'), '/SHIR01-RUN01')]","
+        REPLACE_STRING= ""name": "[concat(parameters('factoryName'), '/SHIR01-RUN02')]","
 
         # Find and replace the text in your JSON file using jq
         jq --arg search "$SEARCH_STRING" --arg replace "$REPLACE_STRING" '. | walk(if type == "string" then if . == $search then $replace else . end else . end)' ./build/build-adf-20231105173635/ARMTemplateParametersForFactory.json > tmp.json
