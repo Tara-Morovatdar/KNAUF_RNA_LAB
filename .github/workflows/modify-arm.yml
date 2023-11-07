@@ -16,10 +16,11 @@ jobs:
         # Define the search and replace strings
         # SEARCH_STRING="SHIR01-RUN01"
         # REPLACE_STRING= "SHIR01-RUN02"
+        cat ./ARMTemplateParametersForFactory.json
         # Find and replace the text in your JSON file using jq
-        cat ./ARMTemplateParametersForFactory.json |  jq '.resources[]'
-        #cat ./ARMTemplateParametersForFactory.json |  jq '.resources[] | select (.name == "[concat(parameters('factoryName'), '/SHIR01-RUN01')]") .properties = "new value"'
-        jq . ./ARMTemplateParametersForFactory.json
+        #jq '.resources[] | select (.name == "[concat(parameters('\''factoryName'\''), '\''/SHIR01-RUN01'\'')]") .properties = "no-test"'
+        cat ./ARMTemplateParametersForFactory.json |  jq '.resources[] | select (.name == "[concat(parameters('\''factoryName'\''), '\''/SHIR01-RUN01'\'')]") .properties = "no-test"'*        
+        #jq . ./ARMTemplateParametersForFactory.json
         #jq --arg search "SHIR01-RUN01" --arg replace "SHIR01-RUN02" ' ./ARMTemplateParametersForFactory.json > tmp.json &&  mv tmp.json ./ARMTemplateParametersForFactory.json
         
       working-directory: ${{ github.workspace }}
