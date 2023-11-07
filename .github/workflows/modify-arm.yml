@@ -15,7 +15,7 @@ jobs:
       run: |
         # Find and replace the text in your JSON file using jq
         #PrintQuotesAsString = "\"linkedInfo\":{\"resourceId\":\"/subscriptions/1e97185d-6892-4844-9688-e3b26adccca2/resourcegroups/AZ-WEUR-PROD-RNA-RG01/providers/Microsoft.DataFactory/factories/AZ-WEUR-PROD-RNA-ADF01/integrationruntimes/SHIR01-RUN01\",}" 
-        cat ./ARMTemplateForFactory.json |  jq '.resources[] | select (.name == "[concat(parameters('\''factoryName'\''), '\''/SHIR01-RUN01'\'')]") .properties.typeProperties = ${{ vars.SHIR}}'     
+        cat ./ARMTemplateForFactory.json |  jq '.resources[] | select (.name == "[concat(parameters('\''factoryName'\''), '\''/SHIR01-RUN01'\'')]") .properties.typeProperties = "${{ vars.SHIR}}"'     
         #jq --arg search "SHIR01-RUN01" --arg replace "SHIR01-RUN02" ' ./ARMTemplateParametersForFactory.json > tmp.json &&  mv tmp.json ./ARMTemplateParametersForFactory.json
         
       working-directory: ${{ github.workspace }}
