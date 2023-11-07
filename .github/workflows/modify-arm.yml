@@ -17,7 +17,8 @@ jobs:
         # SEARCH_STRING="SHIR01-RUN01"
         # REPLACE_STRING= "SHIR01-RUN02"
         # Find and replace the text in your JSON file using jq
-        jq --arg search "SHIR01-RUN01" --arg replace "SHIR01-RUN02" ' ./ARMTemplateParametersForFactory.json > tmp.json &&  mv tmp.json ./ARMTemplateParametersForFactory.json
+        jq . ./ARMTemplateParametersForFactory.json
+        #jq --arg search "SHIR01-RUN01" --arg replace "SHIR01-RUN02" ' ./ARMTemplateParametersForFactory.json > tmp.json &&  mv tmp.json ./ARMTemplateParametersForFactory.json
         
       working-directory: ${{ github.workspace }}
     
