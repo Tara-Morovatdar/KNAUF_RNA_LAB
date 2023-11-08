@@ -2390,16 +2390,6 @@
       ]
     },
     {
-      "name": "[concat(parameters('factoryName'), '/SHIR01-RUN01')]",
-      "type": "Microsoft.DataFactory/factories/integrationRuntimes",
-      "apiVersion": "2018-06-01",
-      "properties": {
-        "type": "SelfHosted",
-        "typeProperties": {}
-      },
-      "dependsOn": []
-    },
-    {
       "name": "[concat(parameters('factoryName'), '/StandardIntegrationRuntime')]",
       "type": "Microsoft.DataFactory/factories/integrationRuntimes",
       "apiVersion": "2018-06-01",
@@ -2487,6 +2477,21 @@
       "dependsOn": [
         "[concat(variables('factoryId'), '/managedVirtualNetworks/default')]"
       ]
+    },
+    {
+      "name": "[concat(parameters(factoryName), /SHIR01-RUN01)]",
+      "type": "Microsoft.DataFactory/factories/integrationRuntimes",
+      "apiVersion": "2018-06-01",
+      "properties": {
+        "type": "SelfHosted",
+        "typeProperties": {
+          "linkedInfo": {
+            "resourceId": "/subscriptions/1e97185d-6892-4844-9688-e3b26adccca2/resourcegroups/AZ-WEUR-PROD-RNA-RG01/providers/Microsoft.DataFactory/factories/AZ-WEUR-PROD-RNA-ADF01/integrationruntimes/SHIR01-RUN01",
+            "authorizationType": "Rbac"
+          }
+        }
+      },
+      "dependsOn": []
     }
   ]
 }
