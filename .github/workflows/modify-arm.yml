@@ -14,7 +14,7 @@ jobs:
     - name: Find and Replace in JSON
       run: |
         # Find and replace the text in your JSON file using jq
-        jq 'del(.resources[] | select(.name ==  "[concat(parameters('factoryName'), '/SHIR01-RUN01')]"))'  ./ARMTemplateForFactory.json > tmp.json &&  mv tmp.json ./ARMTemplateForFactory.json       
+        jq 'del(.resources[] | select(.name ==  "[concat(parameters('factoryName'), '/SHIR01-RUN01')]"))'  ./ARMTemplateForFactory.json > temp.json &&  mv temp.json ./ARMTemplateForFactory.json       
         # jq '.resources[.resources| length] |=. +  { 
         # "name": "[concat(parameters('factoryName'), '/SHIR01-RUN01')]",
         # "type": "Microsoft.DataFactory/factories/integrationRuntimes",
