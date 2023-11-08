@@ -37,6 +37,6 @@ jobs:
       run: |
         git config user.name "Tara-Morovatdar"
         git config user.email "t.morovatdar@gmail.com"
-        git add ./ARMTemplateForFactory.json
+        git add ./build/build-adf-20231107134156/ARMTemplateForFactory.json
         git commit -m "Update JSON file"
         git push
